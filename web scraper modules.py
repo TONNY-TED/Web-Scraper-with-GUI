@@ -25,3 +25,11 @@ class WebScraperApp:
         self.style.configure("TTreeview", background="#FFFFFF", fieldbackground="#FFFFFF", foreground="#2C3E50")
         self.style.configure("TTreeview.Heading", font=("Arial", 10, "bold"), background="#1A237E", foreground="#FFFFFF")
 
+
+  # Header with gradient
+        self.header_frame = tk.Frame(root, bg="#1A237E")
+        self.header_frame.pack(fill="x", pady=15)
+        self.header_label = ttk.Label(self.header_frame, text="Web Scraper & IP Resolver", style="Header.TLabel")
+        self.header_label.pack()
+
+
