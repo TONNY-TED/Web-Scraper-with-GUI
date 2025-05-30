@@ -14,4 +14,14 @@ class WebScraperApp:
         self.root = root
         self.root.title("Web Scraper & IP Resolver")
         self.root.geometry("900x700")
-        self.root.configure(bg="#E0E7FF")  
+        self.root.configure(bg="#E0E7FF") 
+
+
+ # Style configuration
+        self.style = ttk.Style()
+        self.style.configure("TButton", font=("Arial", 11), padding=12)
+        self.style.configure("TLabel", font=("Arial", 12), background="#E0E7FF", foreground="#2C3E50")
+        self.style.configure("Header.TLabel", font=("Arial", 18, "bold"), background="#1A237E", foreground="#2980B9")
+        self.style.configure("TTreeview", background="#FFFFFF", fieldbackground="#FFFFFF", foreground="#2C3E50")
+        self.style.configure("TTreeview.Heading", font=("Arial", 10, "bold"), background="#1A237E", foreground="#FFFFFF")
+
