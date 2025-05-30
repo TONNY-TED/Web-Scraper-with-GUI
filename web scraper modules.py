@@ -33,3 +33,12 @@ class WebScraperApp:
         self.header_label.pack()
 
 
+  # Input Frame
+        self.input_frame = tk.Frame(root, bg="#E0E7FF")
+        self.input_frame.pack(pady=10, padx=20, fill="x")
+        self.url_label = ttk.Label(self.input_frame, text="Enter URL (e.g., https://example.com):")
+        self.url_label.pack(anchor="w", pady=5)
+        self.url_entry = ttk.Entry(self.input_frame, width=60, font=("Arial", 11))
+        self.url_entry.pack(pady=5, fill="x")
+
+
