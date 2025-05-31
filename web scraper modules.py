@@ -46,6 +46,21 @@ class WebScraperApp:
         self.button_frame.pack(pady=10)
          self.fetch_button = tk.Button(self.button_frame, text="Fetch HTML", command=self.fetch_html_async,
                                       bg="#28A745", fg="white", font=("Arial", 11), relief="flat", padx=15, pady=8)
+        self.fetch_button.pack(side="left", padx=5)
+        self.fetch_button.bind("<Enter>", lambda e: self.fetch_button.config(bg="#218838"))
+        self.fetch_button.bind("<Leave>", lambda e: self.fetch_button.config(bg="#28A745"))
+
+        self.ip_button = tk.Button(self.button_frame, text="Resolve IP", command=self.resolve_ip_async,
+                                   bg="#DC3545", fg="white", font=("Arial", 11), relief="flat", padx=15, pady=8)
+        self.ip_button.pack(side="left", padx=5)
+        self.ip_button.bind("<Enter>", lambda e: self.ip_button.config(bg="#C82333"))
+        self.ip_button.bind("<Leave>", lambda e: self.ip_button.config(bg="#DC3545"))
+
+        self.clear_button = tk.Button(self.button_frame, text="Clear", command=self.clear_all,
+                                      bg="#FFC107", fg="black", font=("Arial", 11), relief="flat", padx=15, pady=8)
+        self.clear_button.pack(side="left", padx=5)
+        self.clear_button.bind("<Enter>", lambda e: self.clear_button.config(bg="#E0A800"))
+        self.clear_button.bind("<Leave>", lambda e: self.clear_button.config(bg="#FFC107"))
 
 
 
