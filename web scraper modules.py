@@ -44,6 +44,8 @@ class WebScraperApp:
   # Button Frame
         self.button_frame = tk.Frame(root, bg="#E0E7FF")
         self.button_frame.pack(pady=10)
+         self.fetch_button = tk.Button(self.button_frame, text="Fetch HTML", command=self.fetch_html_async,
+                                      bg="#28A745", fg="white", font=("Arial", 11), relief="flat", padx=15, pady=8)
 
 
 
