@@ -41,4 +41,10 @@ class WebScraperApp:
         self.url_entry = ttk.Entry(self.input_frame, width=60, font=("Arial", 11))
         self.url_entry.pack(pady=5, fill="x")
 
+  # Button Frame
+        self.button_frame = tk.Frame(root, bg="#E0E7FF")
+        self.button_frame.pack(pady=10)
+
+
+
 
