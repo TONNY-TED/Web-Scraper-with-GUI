@@ -62,6 +62,16 @@ class WebScraperApp:
         self.clear_button.bind("<Enter>", lambda e: self.clear_button.config(bg="#E0A800"))
         self.clear_button.bind("<Leave>", lambda e: self.clear_button.config(bg="#FFC107"))
 
+ # Status Bar
+        self.status_var = tk.StringVar()
+        self.status_var.set("Ready")
+        self.status_bar = ttk.Label(root, textvariable=self.status_var, font=("Arial", 10), background="#E0E7FF",
+                                    foreground="#7F8C8D")
+        self.status_bar.pack(side="bottom", fill="x", pady=5)
+
+        # History storage with limit
+        self.history = []
+        self.MAX_HISTORY = 20
 
 
 
