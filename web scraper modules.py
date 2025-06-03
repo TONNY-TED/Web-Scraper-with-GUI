@@ -163,7 +163,15 @@ class WebScraperApp:
     def validate_url(self, url):
         """Validate URL format with precompiled regex."""
         return bool(self.url_pattern.match(url.strip()))
-
+        
+    def fetch_html_async(self):
+        """Fetch HTML content asynchronously using ScrapingBee API."""
+        url = self.url_entry.get().strip()
+        if not self.validate_url(url):
+            messagebox.showerror("Error", "Invalid URL format!")
+            return
+        self.status_var.set("Fetching HTML...")
+        threading.Thread(target=self._fetch_html, args=(url,), daemon=True).start()
     
 
        
