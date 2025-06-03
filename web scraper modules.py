@@ -237,6 +237,14 @@ class WebScraperApp:
             logging.error(f"Failed to resolve IP: {str(e)}")
             self.root.after(0, lambda: self.result_html.load_html("<h3>Error resolving IP</h3>"))
             self.status_var.set("IP resolution failed")
+
+ def resolve_ip_silent(self, url):
+        """Resolve IP silently for history."""
+        try:
+            domain = urlparse(url).netloc
+            return socket.gethostbyname(domain)
+        except socket.gaierror:
+            return "N/A"
     
 
        
