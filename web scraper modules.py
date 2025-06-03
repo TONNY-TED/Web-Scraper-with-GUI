@@ -108,6 +108,58 @@ class WebScraperApp:
             r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
 
+ # Custom CSS for styling rendered content
+        self.custom_css = """
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                line-height: 1.6;
+                background-color: #F9FBFF;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                max-width: 100%;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                color: #1A237E;
+                margin-bottom: 15px;
+                font-weight: 600;
+            }
+            p {
+                color: #2C3E50;
+                margin-bottom: 15px;
+            }
+            a {
+                color: #2980B9;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+            a:hover {
+                color: #3498DB;
+                text-decoration: underline;
+            }
+            ul, ol {
+                padding-left: 25px;
+                color: #34495E;
+            }
+            li {
+                margin-bottom: 10px;
+            }
+            .content-box {
+                background-color: #FFFFFF;
+                padding: 15px;
+                border-radius: 5px;
+                margin-bottom: 15px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                border-left: 4px solid #28A745;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        </style>
+        """
+
        
 
 
