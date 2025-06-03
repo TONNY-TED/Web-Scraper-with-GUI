@@ -62,11 +62,43 @@ class WebScraperApp:
         self.clear_button.bind("<Enter>", lambda e: self.clear_button.config(bg="#E0A800"))
         self.clear_button.bind("<Leave>", lambda e: self.clear_button.config(bg="#FFC107"))
 
+        
+# Result Frame
+        self.result_frame = tk.Frame(root, bg="#E0E7FF")
+        self.result_frame.pack(pady=10, padx=20, fill="both", expand=True)
+        self.result_label = ttk.Label(self.result_frame, text="Results:")
+        self.result_label.pack(anchor="w", pady=5)
+        self.result_html = HtmlFrame(self.result_frame, horizontal_scrollbar="auto", messages_enabled=False)
+        self.result_html.pack(pady=5, fill="both", expand=True)
+
+
+        # History Frame
+        self.history_frame = tk.Frame(root, bg="#E0E7FF")
+        self.history_frame.pack(pady=10, padx=20, fill="x")
+        self.history_label = ttk.Label(self.history_frame, text="Fetch History:")
+        self.history_label.pack(anchor="w", pady=5)
+        self.history_tree = ttk.Treeview(self.history_frame, columns=("URL", "IP", "Timestamp"), show="headings",
+                                         height=6)
+        self.history_tree.heading("URL", text="URL", command=lambda: self.sort_column("URL", False))
+        self.history_tree.heading("IP", text="IP Address", command=lambda: self.sort_column("IP", False))
+        self.history_tree.heading("Timestamp", text="Timestamp", command=lambda: self.sort_column("Timestamp", False))
+        self.history_tree.column("URL", width=400)
+        self.history_tree.column("IP", width=150)
+        self.history_tree.column("Timestamp", width=150)
+        self.history_tree.pack(pady=5, fill="x")
+
+  # Status Bar
+        self.status_var = tk.StringVar()
+        self.status_var.set("Ready")
+        self.status_bar = ttk.Label(root, textvariable=self.status_var, font=("Arial", 10), background="#E0E7FF",
+                                    foreground="#7F8C8D")
+        self.status_bar.pack(side="bottom", fill="x", pady=5)
+
         # History storage with limit
         self.history = []
         self.MAX_HISTORY = 20
 
-# Precompile regex for efficiency
+        # Precompile regex for efficiency
         self.url_pattern = re.compile(
             r'^https?://'  # http:// or https://
             r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?|'  # domain
@@ -76,5 +108,6 @@ class WebScraperApp:
             r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
 
+       
 
 
