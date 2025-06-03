@@ -172,6 +172,71 @@ class WebScraperApp:
             return
         self.status_var.set("Fetching HTML...")
         threading.Thread(target=self._fetch_html, args=(url,), daemon=True).start()
+
+
+
+    def _fetch_html(self, url):
+        """Internal method to fetch HTML with ScrapingBee API and retry logic."""
+        SCRAPINGBEE_API_KEY = "JETZB07W7FB2G03KUSQ3XPZ55XX24NHCEZHZJU9J6TTADP78NWVT765LO49F05IOZXW254926OSU0AAY"  # Your ScrapingBee API key
+        api_url = f"https://app.scrapingbee.com/api/v1?url={url}&api_key={SCRAPINGBEE_API_KEY}&render_js=true"
+        try:
+            for attempt in range(3):
+                try:
+                    response = requests.get(api_url, timeout=10)
+                    response.raise_for_status()
+                    html_content = response.text
+                    if "<head>" in html_content:
+                        html_content = html_content.replace("<head>", f"<head>{self.custom_css}")
+                    else:
+                        html_content = f"<html><head>{self.custom_css}</head><body>{html_content}</body></html>"
+                    self.root.after(0, lambda: self.result_html.load_html(html_content))
+                    ip = self.resolve_ip_silent(url)
+                    self._update_history(url, ip)
+                    self.status_var.set("HTML fetched successfully")
+                    return
+                except requests.exceptions.RequestException as e:
+                    if attempt < 2:
+                        logging.warning(f"Attempt {attempt + 1} failed: {str(e)}. Retrying...")
+                        continue
+                    raise
+        except Exception as e:
+            logging.error(f"Failed to fetch HTML: {str(e)}")
+            error_message = str(e)
+            if "401" in error_message:
+                self.root.after(0, lambda: self.result_html.load_html("<h3>Error: Invalid ScrapingBee API key. Please update the API key in the code.</h3>"))
+            else:
+                self.root.after(0, lambda: self.result_html.load_html("<h3>Error fetching content</h3>"))
+            self.status_var.set("Fetch failed")
+
+    def resolve_ip_async(self):
+        """Resolve IP address asynchronously."""
+        url = self.url_entry.get().strip()
+        if not self.validate_url(url):
+            messagebox.showerror("Error", "Invalid URL format!")
+            return
+        self.status_var.set("Resolving IP...")
+        threading.Thread(target=self._resolve_ip, args=(url,), daemon=True).start()
+
+    def _resolve_ip(self, url):
+        """Internal method to resolve IP with retry logic."""
+        try:
+            for attempt in range(3):
+                try:
+                    domain = urlparse(url).netloc
+                    ip = socket.gethostbyname(domain)
+                    self.root.after(0, lambda: self.result_html.load_html(f"<h3>IP Address for {url}</h3><p>{ip}</p>"))
+                    self._update_history(url, ip)
+                    self.status_var.set("IP resolved successfully")
+                    return
+                except socket.gaierror as e:
+                    if attempt < 2:
+                        logging.warning(f"Attempt {attempt + 1} failed: {str(e)}. Retrying...")
+                        continue
+                    raise
+        except Exception as e:
+            logging.error(f"Failed to resolve IP: {str(e)}")
+            self.root.after(0, lambda: self.result_html.load_html("<h3>Error resolving IP</h3>"))
+            self.status_var.set("IP resolution failed")
     
 
        
