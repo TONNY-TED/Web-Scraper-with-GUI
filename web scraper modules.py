@@ -160,6 +160,12 @@ class WebScraperApp:
         </style>
         """
 
+    def validate_url(self, url):
+        """Validate URL format with precompiled regex."""
+        return bool(self.url_pattern.match(url.strip()))
+
+    
+
        
 
 
