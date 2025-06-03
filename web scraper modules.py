@@ -245,6 +245,16 @@ class WebScraperApp:
             return socket.gethostbyname(domain)
         except socket.gaierror:
             return "N/A"
+
+
+ def _update_history(self, url, ip):
+        """Update history with timestamp and limit."""
+        timestamp = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
+        self.history.append((url, ip, timestamp))
+        if len(self.history) > self.MAX_HISTORY:
+            self.history.pop(0)
+        self.root.after(0, self.update_history_table)
+     
     
 
        
