@@ -1,23 +1,25 @@
-import tkinter as tk  # GUI framework
-from tkinter import ttk, messagebox  # Themed widgets and dialog boxes
-import requests  # HTTP requests library
-import socket  # Networking (IP/hostname)
-from urllib.parse import urlparse  # URL parsing
-import re  # Regular expressions
-from tkinterweb.htmlwidgets import HtmlFrame  # HTML display in Tkinter
-import threading  # Multithreading support
-import logging  # Logging utilities
-from datetime import datetime  # Date and time handling
+import tkinter as tk
+from tkinter import ttk, messagebox
+import requests
+import socket
+from urllib.parse import urlparse
+import re
+from tkinterweb.htmlwidgets import HtmlFrame
+import threading
+import logging
+from datetime import datetime
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class WebScraperApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Web Scraper & IP Resolver")
         self.root.geometry("900x700")
-        self.root.configure(bg="#E0E7FF") 
+        self.root.configure(bg="#E0E7FF")  # Light blue gradient base
 
-
- # Style configuration
+        # Style configuration
         self.style = ttk.Style()
         self.style.configure("TButton", font=("Arial", 11), padding=12)
         self.style.configure("TLabel", font=("Arial", 12), background="#E0E7FF", foreground="#2C3E50")
@@ -25,15 +27,13 @@ class WebScraperApp:
         self.style.configure("TTreeview", background="#FFFFFF", fieldbackground="#FFFFFF", foreground="#2C3E50")
         self.style.configure("TTreeview.Heading", font=("Arial", 10, "bold"), background="#1A237E", foreground="#FFFFFF")
 
-
-  # Header with gradient
+        # Header with gradient
         self.header_frame = tk.Frame(root, bg="#1A237E")
         self.header_frame.pack(fill="x", pady=15)
         self.header_label = ttk.Label(self.header_frame, text="Web Scraper & IP Resolver", style="Header.TLabel")
         self.header_label.pack()
 
-
-  # Input Frame
+        # Input Frame
         self.input_frame = tk.Frame(root, bg="#E0E7FF")
         self.input_frame.pack(pady=10, padx=20, fill="x")
         self.url_label = ttk.Label(self.input_frame, text="Enter URL (e.g., https://example.com):")
@@ -41,10 +41,10 @@ class WebScraperApp:
         self.url_entry = ttk.Entry(self.input_frame, width=60, font=("Arial", 11))
         self.url_entry.pack(pady=5, fill="x")
 
-  # Button Frame
+        # Button Frame
         self.button_frame = tk.Frame(root, bg="#E0E7FF")
         self.button_frame.pack(pady=10)
-         self.fetch_button = tk.Button(self.button_frame, text="Fetch HTML", command=self.fetch_html_async,
+        self.fetch_button = tk.Button(self.button_frame, text="Fetch HTML", command=self.fetch_html_async,
                                       bg="#28A745", fg="white", font=("Arial", 11), relief="flat", padx=15, pady=8)
         self.fetch_button.pack(side="left", padx=5)
         self.fetch_button.bind("<Enter>", lambda e: self.fetch_button.config(bg="#218838"))
@@ -62,15 +62,13 @@ class WebScraperApp:
         self.clear_button.bind("<Enter>", lambda e: self.clear_button.config(bg="#E0A800"))
         self.clear_button.bind("<Leave>", lambda e: self.clear_button.config(bg="#FFC107"))
 
-        
-# Result Frame
+        # Result Frame
         self.result_frame = tk.Frame(root, bg="#E0E7FF")
         self.result_frame.pack(pady=10, padx=20, fill="both", expand=True)
         self.result_label = ttk.Label(self.result_frame, text="Results:")
         self.result_label.pack(anchor="w", pady=5)
         self.result_html = HtmlFrame(self.result_frame, horizontal_scrollbar="auto", messages_enabled=False)
         self.result_html.pack(pady=5, fill="both", expand=True)
-
 
         # History Frame
         self.history_frame = tk.Frame(root, bg="#E0E7FF")
@@ -87,7 +85,7 @@ class WebScraperApp:
         self.history_tree.column("Timestamp", width=150)
         self.history_tree.pack(pady=5, fill="x")
 
-  # Status Bar
+        # Status Bar
         self.status_var = tk.StringVar()
         self.status_var.set("Ready")
         self.status_bar = ttk.Label(root, textvariable=self.status_var, font=("Arial", 10), background="#E0E7FF",
@@ -107,8 +105,7 @@ class WebScraperApp:
             r'(?::\d+)?'  # optional port
             r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
-
- # Custom CSS for styling rendered content
+        # Custom CSS for styling rendered content
         self.custom_css = """
         <style>
             body {
@@ -163,7 +160,7 @@ class WebScraperApp:
     def validate_url(self, url):
         """Validate URL format with precompiled regex."""
         return bool(self.url_pattern.match(url.strip()))
-        
+
     def fetch_html_async(self):
         """Fetch HTML content asynchronously using ScrapingBee API."""
         url = self.url_entry.get().strip()
@@ -172,8 +169,6 @@ class WebScraperApp:
             return
         self.status_var.set("Fetching HTML...")
         threading.Thread(target=self._fetch_html, args=(url,), daemon=True).start()
-
-
 
     def _fetch_html(self, url):
         """Internal method to fetch HTML with ScrapingBee API and retry logic."""
@@ -238,23 +233,13 @@ class WebScraperApp:
             self.root.after(0, lambda: self.result_html.load_html("<h3>Error resolving IP</h3>"))
             self.status_var.set("IP resolution failed")
 
- def resolve_ip_silent(self, url):
+    def resolve_ip_silent(self, url):
         """Resolve IP silently for history."""
         try:
             domain = urlparse(url).netloc
             return socket.gethostbyname(domain)
         except socket.gaierror:
             return "N/A"
-
-
- def _update_history(self, url, ip):
-        """Update history with timestamp and limit."""
-        timestamp = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
-        self.history.append((url, ip, timestamp))
-        if len(self.history) > self.MAX_HISTORY:
-            self.history.pop(0)
-        self.root.after(0, self.update_history_table)
-
 
     def _update_history(self, url, ip):
         """Update history with timestamp and limit."""
@@ -294,9 +279,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = WebScraperApp(root)
     root.mainloop()
-     
-    
-
-       
-
-
