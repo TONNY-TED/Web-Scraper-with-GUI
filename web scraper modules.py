@@ -254,6 +254,46 @@ class WebScraperApp:
         if len(self.history) > self.MAX_HISTORY:
             self.history.pop(0)
         self.root.after(0, self.update_history_table)
+
+
+    def _update_history(self, url, ip):
+        """Update history with timestamp and limit."""
+        timestamp = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
+        self.history.append((url, ip, timestamp))
+        if len(self.history) > self.MAX_HISTORY:
+            self.history.pop(0)
+        self.root.after(0, self.update_history_table)
+
+    def update_history_table(self):
+        """Update the history table with alternating row colors."""
+        for item in self.history_tree.get_children():
+            self.history_tree.delete(item)
+        for i, (url, ip, timestamp) in enumerate(self.history):
+            tag = "evenrow" if i % 2 == 0 else "oddrow"
+            self.history_tree.insert("", tk.END, values=(url, ip, timestamp), tags=(tag,))
+        self.history_tree.tag_configure("evenrow", background="#F9FBFF")
+        self.history_tree.tag_configure("oddrow", background="#ECF0F7")
+
+    def sort_column(self, col, reverse):
+        """Sort the history table by column."""
+        l = [(self.history_tree.set(k, col), k) for k in self.history_tree.get_children('')]
+        l.sort(reverse=reverse)
+        for index, (val, k) in enumerate(l):
+            self.history_tree.move(k, '', index)
+        self.history_tree.heading(col, command=lambda: self.sort_column(col, not reverse))
+
+    def clear_all(self):
+        """Clear all fields and history."""
+        self.url_entry.delete(0, tk.END)
+        self.result_html.load_html("")
+        self.history.clear()
+        self.update_history_table()
+        self.status_var.set("Cleared")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = WebScraperApp(root)
+    root.mainloop()
      
     
 
