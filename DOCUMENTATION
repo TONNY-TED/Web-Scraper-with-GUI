@@ -1,1 +1,35 @@
+Web Scraper & IP Resolver - Documentation
+
+Overview
+This is a Python desktop GUI application built with Tkinter. It allows users to fetch the HTML content of a webpage using the ScrapingBee API, resolve the IP address of a given URL, and view a history of their interactions.
+
+Features
+- User-friendly GUI using Tkinter and ttk.
+- Fetch and display webpage HTML with JavaScript rendering (ScrapingBee API).
+- Resolve domain names to IP addresses.
+- Display styled HTML content using tkinterweb.
+- Maintain a sortable fetch history with timestamps.
+- Use of multithreading to prevent UI freezing.
+
+Technologies Used
+- tkinter - GUI framework
+- tkinter.ttk - Themed widgets
+- tkinterweb - HTML rendering in a Tkinter widget
+- requests - HTTP requests
+- socket - DNS resolution
+- threading - Background processing
+- re - Regular expressions for URL validation
+- datetime - Timestamps
+- logging - Debug and error logging
+
+How to Use
+1. Enter a valid URL (e.g., https://example.com) into the input field.
+2. Click 'Fetch HTML' to retrieve and display the page content.
+3. Click 'Resolve IP' to find and show the IP address of the domain.
+4. View all your previous actions in the Fetch History table.
+5. Click 'Clear' to reset the interface.
+
+Requirements
+Install the required Python packages using pip:
+pip install requests tkinterweb
 
